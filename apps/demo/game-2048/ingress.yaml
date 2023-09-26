@@ -26,7 +26,7 @@ kind: Ingress
 metadata:
   name: ingres-2048-nginx
   namespace: game-2048
-annotations:
+  annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
