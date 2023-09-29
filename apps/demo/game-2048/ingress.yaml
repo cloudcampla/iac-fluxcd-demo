@@ -31,12 +31,13 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - http:
+    - host: 2048.monitoring.devopstech.net
+      http:
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: service-2048
-              port:
-                number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: service-2048
+                port:
+                  number: 80
