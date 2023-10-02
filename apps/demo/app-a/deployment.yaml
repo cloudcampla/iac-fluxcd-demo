@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-a
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app-a
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: app-a
+    spec:
+      containers:
+      - image: public.ecr.aws/e0f5p9d7/cloudcampla/observability-demo-app:latest
+        imagePullPolicy: Always
+        name: app-a
+        ports:
+        - containerPort: 8080
