@@ -79,3 +79,34 @@ spec:
           readOnly: false
           secureJsonData:
             httpHeaderValue1: 'agosto-eks-cluster'
+    prometheus:
+      prometheusSpec:
+        externalLabels:
+            environment: demo
+            cluster: agosto-eks-cluster
+        podMonitorSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
+        additionalScrapeConfigs:
+        - job_name: "app-a"
+          scrape_interval: 5s
+          metrics_path: "/actuator/prometheus"
+          static_configs:
+            - targets: ["app-a.lab-demo:80"]
+        - job_name: "app-b"
+          scrape_interval: 5s
+          metrics_path: "/actuator/prometheus"
+          static_configs:
+            - targets: ["app-a.lab-demo:80"]
+        - job_name: "app-c"
+          scrape_interval: 5s
+          metrics_path: "/actuator/prometheus"
+          static_configs:
+            - targets: ["app-a.lab-demo:80"]
+        storageSpec: 
+          volumeClaimTemplate:
+            spec:
+              storageClassName: ebs-sc
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 50Gi
