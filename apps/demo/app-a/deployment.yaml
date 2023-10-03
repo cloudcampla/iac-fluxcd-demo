@@ -20,7 +20,7 @@ spec:
         - containerPort: 8080
         env:
           - name: OTEL_EXPORTER_OTLP_ENDPOINT
-            value: http://tempo.observability:4317
+            value: http://tempo.observability:4318
           - name: OTEL_EXPORTER_OTLP_PROTOCOL
             value: http/protobuf
           - name: OTEL_RESOURCE_ATTRIBUTES
