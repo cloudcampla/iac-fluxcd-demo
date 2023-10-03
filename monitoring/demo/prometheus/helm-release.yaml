@@ -22,3 +22,60 @@ spec:
   values:
     grafana:
       enabled: true
+      sidecar:
+        datasources:
+          enabled: true
+          defaultDatasourceEnabled: false
+          isDefaultDatasource: false
+      additionalDataSources: 
+        - name: prometheus-agosto-eks-cluster
+          uid: prometheus-agosto-eks-cluster
+          type: prometheus
+          url: http://prometheus-kube-prometheus-prometheus:9090
+          jsonData:
+            httpHeaderName1: 'X-Scope-OrgID'
+            tlsSkipVerify: true
+            exemplarTraceIdDestinations:
+              - datasourceUid: tempo-agosto-eks-cluster
+                name: trace_id
+            httpMethod: POST
+          readOnly: false
+          secureJsonData:
+            httpHeaderValue1: 'agosto-eks-cluster'
+        - name: tempo-agosto-eks-cluster
+          uid: tempo-agosto-eks-cluster
+          type: tempo
+          url: http://tempo:3100
+          isDefault: false
+          jsonData:
+            httpHeaderName1: 'X-Scope-OrgID'
+            tlsSkipVerify: true
+            nodeGraph:
+              enabled: true
+            search:
+              hide: false
+            tracesToLogs:
+              datasourceUid: loki-agosto-eks-cluster
+              filterBySpanID: false
+              filterByTraceID: true
+              mapTagNamesEnabled: false
+              tags:
+                - compose_service
+          readOnly: false
+          secureJsonData:
+            httpHeaderValue1: "agosto-eks-cluster"
+        - name: loki-agosto-eks-cluster
+          uid: loki-agosto-eks-cluster
+          type: loki
+          url: http://loki-read:3100
+          jsonData:
+            httpHeaderName1: 'X-Scope-OrgID'
+            tlsSkipVerify: true
+            derivedFields:
+              - datasourceUid: tempo-agosto-eks-cluster
+                matcherRegex: (?:trace_id)=(\w+)
+                name: TraceID
+                url: $${__value.raw}
+          readOnly: false
+          secureJsonData:
+            httpHeaderValue1: 'agosto-eks-cluster'
