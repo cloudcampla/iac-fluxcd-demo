@@ -18,3 +18,14 @@ spec:
         name: app-b
         ports:
         - containerPort: 8080
+        env:
+          - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            value: http://tempo.observability:3100
+          - name: OTEL_EXPORTER_OTLP_PROTOCOL
+            value: http/protobuf
+          - name: OTEL_RESOURCE_ATTRIBUTES
+            value: service.name=app-b,app=app-b
+          - name: MANAGEMENT_METRICS_TAGS_APPLICATION
+            value: app-b
+          - name: OTEL_METRICS_EXPORTER
+            value: none
