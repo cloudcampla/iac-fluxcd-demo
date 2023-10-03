@@ -96,12 +96,12 @@ spec:
           scrape_interval: 5s
           metrics_path: "/actuator/prometheus"
           static_configs:
-            - targets: ["app-a.lab-demo:80"]
+            - targets: ["app-b.lab-demo:80"]
         - job_name: "app-c"
           scrape_interval: 5s
           metrics_path: "/actuator/prometheus"
           static_configs:
-            - targets: ["app-a.lab-demo:80"]
+            - targets: ["app-c.lab-demo:80"]
         storageSpec: 
           volumeClaimTemplate:
             spec:
