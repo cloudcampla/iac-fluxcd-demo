@@ -39,7 +39,6 @@ spec:
               - datasourceUid: tempo-agosto-eks-cluster
                 name: trace_id
             httpMethod: POST
-          readOnly: false
           secureJsonData:
             httpHeaderValue1: 'agosto-eks-cluster'
         - name: tempo-agosto-eks-cluster
@@ -60,8 +59,7 @@ spec:
               filterByTraceID: true
               mapTagNamesEnabled: false
               tags:
-                - compose_service
-          readOnly: false
+                - app
           secureJsonData:
             httpHeaderValue1: "agosto-eks-cluster"
         - name: loki-agosto-eks-cluster
@@ -76,7 +74,6 @@ spec:
                 matcherRegex: (?:trace_id)=(\w+)
                 name: TraceID
                 url: $${__value.raw}
-          readOnly: false
           secureJsonData:
             httpHeaderValue1: 'agosto-eks-cluster'
     prometheus:
