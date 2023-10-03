@@ -55,6 +55,8 @@ spec:
               hide: false
             tracesToLogs:
               datasourceUid: loki-agosto-eks-cluster
+              spanStartTimeShift: '1h'
+              spanEndTimeShift: '-1h'
               filterBySpanID: false
               filterByTraceID: true
               mapTagNamesEnabled: false
