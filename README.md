@@ -22,3 +22,15 @@
       --path=clusters/demo \
       --context=agosto-eks-cluster
 
+
+
+# CREAR ROLE LOKI 
+
+eksctl create iamserviceaccount \
+  --cluster=agosto-eks-cluster \
+  --namespace=observability \
+  --name=demo-grafana-loki-sa \
+  --role-name demo-grafana-loki-role \
+  --role-only \
+  --attach-policy-arn=arn:aws:iam::aws:policy/AmazonS3FullAccess \
+  --approve

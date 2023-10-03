@@ -1,0 +1,74 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: observability
+spec:
+  interval: 1m
+  chart:
+    spec:
+      chart: loki
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-community
+        namespace: flux-system
+      version: '4.8.0'
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    loki:
+      tenant_id: "agosto-eks-cluster"
+      auth_enabled: true
+      querier:
+        multi_tenant_queries_enabled: false
+      schemaConfig:
+        configs:
+        - from: "2023-09-01"
+          index:
+            period: 24h
+            prefix: loki_index_
+          object_store: s3
+          schema: v12
+          store: boltdb-shipper
+      storage:
+        type: s3
+        bucketNames: 
+          chunks: observability-demo-loki
+          ruler: observability-demo-loki
+          admin: observability-demo-loki
+        s3:
+          s3: s3://us-east-1
+          region: us-east-1
+          s3ForcePathStyle: false
+          insecure: false
+          sse_encryption: true
+          http_config: {}
+      storageConfig:
+        boltdb_shipper:
+          shared_store: s3
+    monitoring:
+      selfMonitoring:
+        enabled: true
+        grafanaAgent:
+          installOperator: false
+      serviceMonitor:
+        enabled: true
+    read:
+      persistence:
+        size: 5Gi
+        storageClass: ebs-sc
+      replicas: 2
+    write:
+      persistence:
+        size: 5Gi
+        storageClass: ebs-sc
+      replicas: 2
+    serviceAccount:
+      create: true
+      name: demo-grafana-loki-sa
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::628924030472:role/demo-grafana-loki-role
