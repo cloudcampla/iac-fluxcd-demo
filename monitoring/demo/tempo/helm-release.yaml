@@ -28,7 +28,7 @@ spec:
       multitenancyEnabled: false
       reportingEnabled: true
       metricsGenerator:
-        enabled: true
+        enabled: false
         remoteWriteUrl: "http://prometheus-kube-prometheus-prometheus:9090/api/v1/write"
       retention: 24h
       global_overrides:
