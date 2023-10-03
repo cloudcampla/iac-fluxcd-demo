@@ -5,12 +5,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: app-b
+      app: app-b
   replicas: 1
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: app-b
+        app: app-b
     spec:
       containers:
       - image: public.ecr.aws/e0f5p9d7/cloudcampla/observability-demo-app:latest

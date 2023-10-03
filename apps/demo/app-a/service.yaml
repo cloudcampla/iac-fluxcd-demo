@@ -9,4 +9,4 @@ spec:
       protocol: TCP
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: app-a
+    app: app-a

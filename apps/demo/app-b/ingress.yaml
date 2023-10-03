@@ -8,8 +8,8 @@ spec:
     - host: app-b.monitoring.devopstech.net
       http:
         paths:
-          - path: /(.*)
-            pathType: ImplementationSpecific
+          - path: /
+            pathType: Prefix
             backend:
               service:
                 name: app-b
