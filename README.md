@@ -40,10 +40,14 @@ eksctl create iamserviceaccount \
 
 eksctl create iamserviceaccount \
   --cluster=agosto-eks-cluster \
-  --namespace=infrastructure \
-  --name=agosto-eks-cluster-karpenter-sa \
+  --namespace=karpenter \
+  --name=karpenter \
   --role-name=agosto-eks-cluster-karpenter-role \
   --role-only \
+  --attach-policy-arn=arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly \
+  --attach-policy-arn=arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy \
+  --attach-policy-arn=arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy \
+  --attach-policy-arn=arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore \
   --approve
 
 curl -fsSL https://raw.githubusercontent.com/aws/karpenter/v0.31.0/website/content/en/preview/getting-started/getting-started-with-karpenter/cloudformation.yaml  > $(pwd)/temp.yaml \
@@ -52,3 +56,9 @@ curl -fsSL https://raw.githubusercontent.com/aws/karpenter/v0.31.0/website/conte
   --template-file "$(pwd)/temp.yaml" \
   --capabilities CAPABILITY_NAMED_IAM \
   --parameter-overrides "ClusterName=agosto-eks-cluster"
+
+- groups:
+  - system:bootstrappers
+  - system:nodes
+  rolearn: arn:aws:iam::628924030472:role/agosto-eks-cluster-karpenter-role
+  username: system:node:{{EC2PrivateDNSName}}
